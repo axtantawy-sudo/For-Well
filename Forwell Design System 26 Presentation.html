@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forwell — Building Brands Across Markets</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B2E;--blue:#2F76C2;--blue-d:#1C5499;--blue-l:#5A99D8;
+  --white:#FFFFFF;--charcoal:#1A2336;--graphite:#3D4A5C;
+  --gray:#8C96A3;--gray-l:#EFF2F6;
+}
+
+deck-stage section{
+  font-family:'Montserrat',sans-serif;
+  color:var(--white);
+  overflow:hidden;
+  position:relative;
+  background:var(--navy);
+}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(-52px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(52px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes imgPan{from{transform:scale(1.06) translateY(0)}to{transform:scale(1.13) translateY(-2%)}}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.04)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.18}50%{opacity:.38}}
+
+.a-up{opacity:0}
+.a-left{opacity:0}
+.a-right{opacity:0}
+.a-scale{opacity:0}
+.a-line{transform:scaleX(0);transform-origin:left center}
+section.in-view .a-up{animation:fadeUp .75s ease-out forwards}
+section.in-view .a-left{animation:fadeLeft .7s ease-out forwards}
+section.in-view .a-right{animation:fadeRight .7s ease-out forwards}
+section.in-view .a-scale{animation:scaleIn .65s ease-out forwards}
+section.in-view .a-line{animation:lineGrow .85s ease-out forwards}
+.d1{animation-delay:.12s!important}
+.d2{animation-delay:.26s!important}
+.d3{animation-delay:.42s!important}
+.d4{animation-delay:.58s!important}
+.d5{animation-delay:.74s!important}
+.d6{animation-delay:.9s!important}
+.d7{animation-delay:1.06s!important}
+.d8{animation-delay:1.22s!important}
+
+/* ── Shared layout ── */
+.bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgPan 20s ease-in-out infinite alternate}
+.overlay{position:absolute;inset:0}
+.inner{position:relative;z-index:2;width:100%;height:100%;padding:72px 104px;display:flex;flex-direction:column}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(47,118,194,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(47,118,194,.05) 1px,transparent 1px);background-size:80px 80px}
+.geo{position:absolute;border-radius:50%;border:1px solid rgba(47,118,194,.18);pointer-events:none}
+.topbar{position:absolute;top:0;left:0;right:0;height:4px;background:var(--blue);z-index:20}
+.logo{display:flex;align-items:baseline;font-weight:800;font-size:24px;letter-spacing:-.01em}
+.logo .f{color:var(--white)}.logo .w{color:var(--blue)}
+.logo-sub{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);margin-top:1px}
+.overline{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-l);display:flex;align-items:center;gap:12px}
+.overline::before{content:'';flex-shrink:0;width:28px;height:2px;background:var(--blue);border-radius:1px}
+.divider{width:56px;height:3px;background:var(--blue);border-radius:2px;margin:20px 0}
+.tag-pill{padding:8px 22px;border:1px solid rgba(255,255,255,.22);border-radius:4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+
+/* ── Cards ── */
+.ch-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-top:3px solid var(--blue);border-radius:6px;padding:30px 26px}
+.ch-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.ch-card p{font-size:13px;color:rgba(255,255,255,.62);line-height:1.65}
+.ch-card .ch-foot{margin-top:20px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-l)}
+.icon-box{width:44px;height:44px;background:rgba(47,118,194,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.stat-box{text-align:center;padding:0 20px}
+.stat-num{font-size:52px;font-weight:800;color:var(--blue);line-height:1}
+.stat-label{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:8px}
+.brand-card{background:var(--white);border-radius:8px;padding:30px 26px;color:var(--charcoal)}
+.brand-name{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-.01em}
+.brand-orig{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-top:6px}
+.brand-cat{font-size:13px;color:var(--graphite);margin-top:10px;line-height:1.55}
+.val-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:8px;padding:36px 30px;flex:1;position:relative;overflow:hidden}
+.val-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--blue)}
+.val-card h3{font-size:16px;font-weight:700;margin-bottom:10px}
+.val-card p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7}
+.partner-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);border-radius:8px;padding:26px;text-align:center}
+.partner-name{font-size:20px;font-weight:700}
+.partner-cat{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-l);margin-top:6px}
+.act-card{background:var(--white);border-radius:8px;padding:34px 28px;flex:1;color:var(--charcoal)}
+.act-num{font-size:40px;font-weight:800;color:var(--blue);line-height:1;opacity:.15}
+.act-card h3{font-size:17px;font-weight:700;color:var(--navy);margin:12px 0 10px}
+.act-card p{font-size:13px;color:var(--graphite);line-height:1.65}
+
+/* ── Slide header row ── */
+.slide-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;flex-shrink:0}
+.slide-header-text h1{font-size:38px;font-weight:800;line-height:1.15;margin-top:8px}
+
+/* ── Stats bar ── */
+.stats-bar{display:flex;border-top:1px solid rgba(255,255,255,.1);padding-top:32px;margin-top:32px;flex-shrink:0}
+
+/* ── Section divider line ── */
+.footnote{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);text-align:center;margin-top:auto;padding-top:20px;flex-shrink:0}
+</style>
+
+<style id="print-overrides">
+  /* Force background colors and images to print */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Show all animated elements immediately */
+  .a-up, .a-left, .a-right, .a-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .a-line {
+    transform: scaleX(1) !important;
+    animation: none !important;
+  }
+  /* Stop background image panning */
+  .bg-img, [style*="imgPan"], [style*="float"], [style*="pulse"], [style*="spin"] {
+    animation: none !important;
+  }
+
+  @media print {
+    @page { size: 1920px 1080px landscape; margin: 0; }
+    body { margin: 0; padding: 0; }
+  }
+</style>
+
+</head>
+<body>
+<deck-stage>
+
+<!-- ════════════════════════════════
+     01 — COVER
+════════════════════════════════ -->
+<section id="s1" data-screen-label="01 Cover">
+  <div class="grid-bg"></div>
+  <!-- Geometric rings -->
+  <div class="geo" style="width:520px;height:520px;right:-110px;top:-110px"></div>
+  <div class="geo" style="width:230px;height:230px;right:90px;top:70px"></div>
+  <div class="geo" style="width:700px;height:700px;left:-250px;bottom:-260px"></div>
+  <div class="geo" style="width:90px;height:90px;left:480px;bottom:180px;background:rgba(47,118,194,.07)"></div>
+  <!-- Dot scatter -->
+  <div style="position:absolute;inset:0;pointer-events:none">
+    <div style="position:absolute;width:7px;height:7px;border-radius:50%;background:var(--blue);opacity:.5;top:22%;left:62%;animation:float 6s ease-in-out infinite"></div>
+    <div style="position:absolute;width:5px;height:5px;border-radius:50%;background:var(--blue-l);opacity:.4;top:55%;left:78%;animation:float 8s ease-in-out infinite 1s"></div>
+    <div style="position:absolute;width:9px;height:9px;border-radius:50%;background:var(--blue);opacity:.3;top:75%;left:55%;animation:float 7s ease-in-out infinite .5s"></div>
+    <div style="position:absolute;width:4px;height:4px;border-radius:50%;background:var(--blue-l);opacity:.6;top:30%;left:72%;animation:pulse 4s ease-in-out infinite"></div>
+    <div style="position:absolute;width:6px;height:6px;border-radius:50%;background:var(--blue);opacity:.4;top:65%;left:85%;animation:pulse 5s ease-in-out infinite 2s"></div>
+  </div>
+  <!-- Top bar -->
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--blue);z-index:10"></div>
+  <div style="position:absolute;top:0;left:0;width:4px;bottom:0;background:linear-gradient(to bottom,var(--blue) 0%,transparent 60%);z-index:10"></div>
+  <!-- Logo -->
+  <div style="position:absolute;top:52px;left:104px;z-index:10" class="a-up">
+    <div class="logo"><span class="f">FOR</span><span class="w">WELL</span></div>
+    <div class="logo-sub">Trade &amp; Distribution</div>
+  </div>
+  <div style="position:absolute;top:58px;right:104px;font-size:11px;font-weight:500;letter-spacing:.14em;color:rgba(255,255,255,.28);z-index:10" class="a-up d1">CAIRO — EGYPT</div>
+  <!-- Main content -->
+  <div style="position:absolute;left:104px;top:50%;transform:translateY(-50%);z-index:5;max-width:940px">
+    <div style="display:flex;align-items:flex-start;gap:36px">
+      <div class="a-scale d1" style="width:4px;height:220px;background:linear-gradient(to bottom,var(--blue),rgba(47,118,194,.2));border-radius:2px;flex-shrink:0;margin-top:12px"></div>
+      <div>
+        <div class="overline a-up d1" style="color:rgba(255,255,255,.38);margin-bottom:28px">Company Presentation — 2024</div>
+        <div style="font-family:'Cairo',sans-serif;font-size:62px;font-weight:800;line-height:1.2;direction:rtl;text-align:right;margin-bottom:18px" class="a-up d2">نبني العلامات التجارية<br>عبر الأسواق</div>
+        <div style="font-size:32px;font-weight:700;color:var(--blue-l);margin-bottom:38px;line-height:1.25" class="a-up d3">Building Brands<br>Across Markets</div>
+        <div style="display:flex;align-items:center;gap:22px" class="a-up d4">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.38)">TRADE</span>
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0"></span>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.38)">DISTRIBUTION</span>
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0"></span>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.38)">EGYPT &amp; MEA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue) 0%,var(--blue-l) 100%)"></div>
+</section>
+
+<!-- ════════════════════════════════
+     02 — ABOUT FORWELL
+════════════════════════════════ -->
+<section id="s2" data-screen-label="02 About Forwell">
+  <div class="topbar"></div>
+  <img class="bg-img" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&w=1920&q=80" alt="Distribution warehouse">
+  <div class="overlay" style="background:linear-gradient(115deg,rgba(13,27,46,.96) 50%,rgba(13,27,46,.72) 100%)"></div>
+  <div class="inner">
+    <div class="slide-header">
+      <div>
+        <div class="overline a-up">ABOUT US — من نحن</div>
+        <div class="divider a-line d1"></div>
+        <h1 style="font-size:42px;font-weight:800;line-height:1.15;margin-top:0" class="a-up d2">Egypt's Modern FMCG<br>Distribution <span style="color:var(--blue)">Platform</span></h1>
+      </div>
+      <div class="logo a-right"><span class="f">FOR</span><span class="w">WELL</span></div>
+    </div>
+
+    <div style="display:flex;gap:64px;flex:1;align-items:flex-start;margin-top:28px">
+      <!-- Left text -->
+      <div style="flex:1.1">
+        <p style="font-size:16px;line-height:1.85;color:rgba(255,255,255,.74);max-width:460px" class="a-up d3">
+          Forwell is a leading Egyptian company specializing in trade, distribution, and brand development for international FMCG and Beauty brands — bridging global brands with local consumers through expertise and operational efficiency.
+        </p>
+        <div style="margin-top:36px;display:flex;flex-direction:column;gap:16px">
+          <div class="a-up d4" style="display:flex;align-items:flex-start;gap:14px">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px"></span>
+            <span style="font-size:15px;color:rgba(255,255,255,.72);line-height:1.6">Strategic partner for international brand expansion</span>
+          </div>
+          <div class="a-up d5" style="display:flex;align-items:flex-start;gap:14px">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px"></span>
+            <span style="font-size:15px;color:rgba(255,255,255,.72);line-height:1.6">Full multi-channel distribution coverage nationwide</span>
+          </div>
+          <div class="a-up d6" style="display:flex;align-items:flex-start;gap:14px">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px"></span>
+            <span style="font-size:15px;color:rgba(255,255,255,.72);line-height:1.6">Operational &amp; logistics excellence across Egypt</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right pillars -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:18px">
+        <div class="ch-card a-right d2">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10A15 15 0 0 1 8 12 15 15 0 0 1 12 2z"/></svg>
+          </div>
+          <h3>Strategic International Partner</h3>
+          <p>Enabling global brands to expand into Egyptian &amp; MEA markets efficiently.</p>
+        </div>
+        <div class="ch-card a-right d3">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <h3>Multi-Channel Distribution</h3>
+          <p>Modern Trade, Traditional Trade, Pharmacy &amp; E-Commerce — full market coverage.</p>
+        </div>
+        <div class="ch-card a-right d4">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Operational Excellence</h3>
+          <p>Logistics, warehousing, and last-mile delivery optimized across Egypt.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat-box a-up d4" style="flex:1;border-right:1px solid rgba(255,255,255,.1)"><div class="stat-num">10+</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat-box a-up d5" style="flex:1;border-right:1px solid rgba(255,255,255,.1)"><div class="stat-num">5+</div><div class="stat-label">Int'l Brands</div></div>
+      <div class="stat-box a-up d6" style="flex:1;border-right:1px solid rgba(255,255,255,.1)"><div class="stat-num">4</div><div class="stat-label">Channels</div></div>
+      <div class="stat-box a-up d7" style="flex:1"><div class="stat-num">MEA</div><div class="stat-label">Market Reach</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     03 — VISION & MISSION
+════════════════════════════════ -->
+<section id="s3" data-screen-label="03 Vision & Mission" style="background:var(--gray-l)">
+  <div class="topbar"></div>
+  <div style="display:flex;height:100%">
+    <!-- Left: Navy / Vision -->
+    <div style="flex:1;background:var(--navy);padding:96px 80px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div class="grid-bg"></div>
+      <div class="geo" style="width:380px;height:380px;right:-120px;bottom:-100px"></div>
+      <div style="position:relative;z-index:2">
+        <div class="overline a-up" style="color:rgba(255,255,255,.38)">VISION — الرؤية</div>
+        <div class="divider a-line d1"></div>
+        <h2 style="font-size:36px;font-weight:800;line-height:1.2;margin-bottom:24px" class="a-up d2">To be the leading strategic partner in Egypt and the MEA region.</h2>
+        <p style="font-size:15px;color:rgba(255,255,255,.64);line-height:1.85;max-width:380px" class="a-up d3">A modern regional distribution platform capable of scaling international brands — built on trust, speed, and precision.</p>
+        <div style="margin-top:40px;font-family:'Cairo',sans-serif;font-size:26px;font-weight:700;color:var(--blue-l);direction:rtl;text-align:right;line-height:1.4" class="a-up d4">أن نكون الشريك<br>الاستراتيجي الرائد</div>
+      </div>
+    </div>
+    <!-- Right: Light / Mission -->
+    <div style="flex:1;background:var(--gray-l);padding:96px 80px;display:flex;flex-direction:column;justify-content:center;position:relative">
+      <div class="overline a-up d1" style="color:var(--blue)">MISSION — الرسالة</div>
+      <div class="divider a-line d2" style="background:var(--blue)"></div>
+      <h2 style="font-size:34px;font-weight:800;line-height:1.2;margin-bottom:24px;color:var(--navy)" class="a-up d2">Bridging the gap between global brands and local consumers.</h2>
+      <p style="font-size:15px;color:var(--graphite);line-height:1.85;max-width:400px" class="a-up d3">Through expertise and operational efficiency, Forwell connects international FMCG and Beauty brands to Egyptian consumers — at speed and scale across every channel.</p>
+      <div style="margin-top:36px;display:flex;flex-direction:column;gap:14px">
+        <div class="a-up d4" style="display:flex;align-items:flex-start;gap:14px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px"></span>
+          <span style="font-size:14px;color:var(--graphite);line-height:1.65">Complete retail execution &amp; market penetration</span>
+        </div>
+        <div class="a-up d5" style="display:flex;align-items:flex-start;gap:14px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px"></span>
+          <span style="font-size:14px;color:var(--graphite);line-height:1.65">Data-driven brand building &amp; trade marketing</span>
+        </div>
+        <div class="a-up d6" style="display:flex;align-items:flex-start;gap:14px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px"></span>
+          <span style="font-size:14px;color:var(--graphite);line-height:1.65">Long-term partnership rooted in trust and growth</span>
+        </div>
+      </div>
+      <div style="margin-top:40px;font-family:'Cairo',sans-serif;font-size:22px;font-weight:700;color:var(--blue);direction:rtl;text-align:right;line-height:1.5" class="a-up d7">ردم الفجوة بين العلامات<br>العالمية والمستهلك المحلي</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     04 — DISTRIBUTION NETWORK
+════════════════════════════════ -->
+<section id="s4" data-screen-label="04 Distribution Network" style="background:var(--charcoal)">
+  <div class="topbar"></div>
+  <div class="grid-bg"></div>
+  <div style="display:flex;height:100%">
+    <!-- LEFT: channels -->
+    <div style="flex:1.1;padding:64px 72px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2">
+      <div class="overline a-up">DISTRIBUTION NETWORK — شبكة التوزيع</div>
+      <div class="divider a-line d1"></div>
+      <h1 style="font-size:36px;font-weight:800;line-height:1.15;margin-bottom:36px" class="a-up d2">Reaching Every <span style="color:var(--blue)">Corner</span> of Egypt</h1>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="a-up d2" style="display:flex;align-items:center;gap:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-left:3px solid var(--blue);border-radius:6px;padding:20px 22px">
+          <div style="width:40px;height:40px;background:rgba(47,118,194,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:700;margin-bottom:3px">Modern Trade</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5)">Hypermarkets · Supermarkets · Organized Retail</div>
+          </div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-l)">Carrefour · Lulu · Panda</div>
+        </div>
+        <div class="a-up d3" style="display:flex;align-items:center;gap:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-left:3px solid var(--blue);border-radius:6px;padding:20px 22px">
+          <div style="width:40px;height:40px;background:rgba(47,118,194,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:700;margin-bottom:3px">Traditional Trade</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5)">Wholesale · Independent Retail · Kiosks</div>
+          </div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-l)">All Governorates</div>
+        </div>
+        <div class="a-up d4" style="display:flex;align-items:center;gap:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-left:3px solid var(--blue);border-radius:6px;padding:20px 22px">
+          <div style="width:40px;height:40px;background:rgba(47,118,194,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:700;margin-bottom:3px">Pharmacy Sector</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5)">Chain Pharmacies · Independent Outlets</div>
+          </div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-l)">Seif · El Ezaby</div>
+        </div>
+        <div class="a-up d5" style="display:flex;align-items:center;gap:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-left:3px solid var(--blue);border-radius:6px;padding:20px 22px">
+          <div style="width:40px;height:40px;background:rgba(47,118,194,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:700;margin-bottom:3px">E-Commerce</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5)">Digital Platforms · Marketplace · D2C</div>
+          </div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-l)">Online · Nationwide</div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT: Egypt infographic -->
+    <div style="flex:.9;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;z-index:2" class="a-right d2">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px;text-align:center">COVERAGE — التغطية</div>
+      <!-- Egypt map SVG (simplified outline) -->
+      <svg viewBox="0 0 260 380" width="260" height="380" style="overflow:visible">
+        <!-- Egypt outline (simplified) -->
+        <path d="M 60 10 L 180 10 L 200 30 L 210 80 L 215 120 L 200 150 L 190 180 L 180 220 L 160 260 L 140 300 L 130 360 L 120 360 L 110 300 L 90 260 L 70 220 L 55 180 L 45 150 L 38 120 L 40 80 L 50 30 Z"
+          fill="rgba(47,118,194,.08)" stroke="rgba(47,118,194,.35)" stroke-width="1.5"/>
+        <!-- Suez Canal hint -->
+        <line x1="185" y1="95" x2="205" y2="115" stroke="rgba(90,153,216,.4)" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- Node: Alexandria -->
+        <circle cx="72" cy="35" r="7" fill="var(--blue)" opacity=".9"/>
+        <circle cx="72" cy="35" r="14" fill="none" stroke="var(--blue)" stroke-width="1" opacity=".3"/>
+        <text x="52" y="24" fill="rgba(255,255,255,.7)" font-size="9" font-family="Montserrat,sans-serif" font-weight="600">Alexandria</text>
+        <!-- Node: Cairo -->
+        <circle cx="118" cy="88" r="10" fill="var(--blue)" opacity="1"/>
+        <circle cx="118" cy="88" r="20" fill="none" stroke="var(--blue)" stroke-width="1.5" opacity=".35"/>
+        <circle cx="118" cy="88" r="30" fill="none" stroke="var(--blue)" stroke-width="1" opacity=".15"/>
+        <text x="132" y="85" fill="white" font-size="10" font-family="Montserrat,sans-serif" font-weight="700">Cairo</text>
+        <text x="132" y="97" fill="rgba(255,255,255,.5)" font-size="8" font-family="Montserrat,sans-serif">HQ</text>
+        <!-- Node: Delta -->
+        <circle cx="100" cy="52" r="5" fill="var(--blue-l)" opacity=".7"/>
+        <text x="62" y="60" fill="rgba(255,255,255,.55)" font-size="8" font-family="Montserrat,sans-serif">Nile Delta</text>
+        <!-- Node: Upper Egypt -->
+        <circle cx="115" cy="220" r="6" fill="var(--blue)" opacity=".7"/>
+        <circle cx="115" cy="220" r="13" fill="none" stroke="var(--blue)" stroke-width="1" opacity=".25"/>
+        <text x="125" y="224" fill="rgba(255,255,255,.6)" font-size="9" font-family="Montserrat,sans-serif" font-weight="600">Upper Egypt</text>
+        <!-- Connect lines -->
+        <line x1="72" y1="35" x2="100" y2="52" stroke="rgba(47,118,194,.3)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="100" y1="52" x2="118" y2="88" stroke="rgba(47,118,194,.3)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="118" y1="88" x2="115" y2="220" stroke="rgba(47,118,194,.25)" stroke-width="1" stroke-dasharray="4,4"/>
+        <!-- Sinai hint -->
+        <circle cx="196" cy="102" r="4" fill="var(--blue-l)" opacity=".5"/>
+        <text x="200" y="116" fill="rgba(255,255,255,.4)" font-size="8" font-family="Montserrat,sans-serif">Sinai</text>
+      </svg>
+      <div style="margin-top:20px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+        <div style="font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block"></span>Distribution Hub</div>
+        <div style="font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px"><span style="width:8px;height:1px;background:rgba(47,118,194,.6);display:inline-block"></span>Coverage Route</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     05 — BRAND PORTFOLIO
+════════════════════════════════ -->
+<section id="s5" data-screen-label="05 Brand Portfolio">
+  <div class="topbar"></div>
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="slide-header">
+      <div>
+        <div class="overline a-up">OUR PORTFOLIO — محفظتنا</div>
+        <div class="divider a-line d1"></div>
+        <h1 style="font-size:38px;font-weight:800;line-height:1.15;margin-top:0" class="a-up d2">International Brands,<br>Local <span style="color:var(--blue)">Expertise</span></h1>
+      </div>
+      <div class="logo a-right"><span class="f">FOR</span><span class="w">WELL</span></div>
+    </div>
+    <div style="display:flex;gap:20px;flex:1;align-items:stretch;margin-top:28px">
+      <div class="brand-card a-up d2" style="flex:1">
+        <div style="width:40px;height:3px;background:var(--blue);border-radius:2px;margin-bottom:20px"></div>
+        <div class="brand-name">Amalfi</div>
+        <div class="brand-orig">Spain — European Quality</div>
+        <div class="brand-cat">Hair Care · Body Care · Fragrances · Shower Gel</div>
+      </div>
+      <div class="brand-card a-up d3" style="flex:1">
+        <div style="width:40px;height:3px;background:var(--blue);border-radius:2px;margin-bottom:20px"></div>
+        <div class="brand-name">SESA</div>
+        <div class="brand-orig">India — Ayurvedic Heritage</div>
+        <div class="brand-cat">Anti Hair Fall · Hair Nourishment · Natural Care</div>
+      </div>
+      <div class="brand-card a-up d4" style="flex:1">
+        <div style="width:40px;height:3px;background:var(--blue);border-radius:2px;margin-bottom:20px"></div>
+        <div class="brand-name">Sea Color</div>
+        <div class="brand-orig">Professional Color Range</div>
+        <div class="brand-cat">Hair Color · Color Care · Salon-Quality Results</div>
+      </div>
+      <div class="brand-card a-up d5" style="flex:1">
+        <div style="width:40px;height:3px;background:var(--blue);border-radius:2px;margin-bottom:20px"></div>
+        <div class="brand-name">Sitil</div>
+        <div class="brand-orig">Modern Daily Care</div>
+        <div class="brand-cat">Personal Hygiene · Practical Modern Solutions</div>
+      </div>
+      <div class="brand-card a-up d6" style="flex:1">
+        <div style="width:40px;height:3px;background:var(--blue);border-radius:2px;margin-bottom:20px"></div>
+        <div class="brand-name">Max Deluxx</div>
+        <div class="brand-orig">Contemporary Beauty</div>
+        <div class="brand-cat">Cosmetics · Modern Beauty for Today's Consumer</div>
+      </div>
+    </div>
+    <div class="footnote a-up d7">Hair Care · Body Care · Personal Hygiene · Cosmetics</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     06 — AMALFI
+════════════════════════════════ -->
+<section id="s6" data-screen-label="06 Amalfi">
+  <div class="topbar"></div>
+  <div style="display:flex;height:100%">
+    <!-- Left: content -->
+    <div style="flex:1.1;background:var(--navy);padding:80px 88px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div class="grid-bg"></div>
+      <div class="geo" style="width:300px;height:300px;right:-80px;bottom:-80px"></div>
+      <div style="position:relative;z-index:2">
+        <div class="overline a-up" style="color:rgba(255,255,255,.38)">BRAND 01 — ESPAÑA · إسبانيا</div>
+        <div class="divider a-line d1"></div>
+        <div style="font-size:88px;font-weight:800;letter-spacing:-.03em;line-height:.92;margin-bottom:20px" class="a-up d2">Amalfi</div>
+        <p style="font-size:18px;font-weight:300;font-style:italic;color:var(--blue-l);margin-bottom:32px;line-height:1.55;max-width:400px" class="a-up d3">Quality European products for hair and body care</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px" class="a-up d4">
+          <span class="tag-pill">Shampoo</span>
+          <span class="tag-pill">Shower Gel</span>
+          <span class="tag-pill">Fragrances</span>
+          <span class="tag-pill">Body Care</span>
+        </div>
+        <div style="display:flex;gap:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)" class="a-up d5">
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">ORIGIN</div>
+            <div style="font-size:14px;font-weight:600">Spain — European Quality</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">CATEGORY</div>
+            <div style="font-size:14px;font-weight:600">Hair Care · Body Care</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">CHANNEL</div>
+            <div style="font-size:14px;font-weight:600">Modern · Pharmacy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: photo -->
+    <div style="flex:.9;position:relative;overflow:hidden">
+      <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgPan 18s ease-in-out infinite alternate" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&w=960&q=85" alt="Amalfi hair care">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,27,46,.5) 0%,rgba(13,27,46,.05) 100%)"></div>
+      <div style="position:absolute;bottom:40px;left:32px;right:32px">
+        <div style="font-family:'Cairo',sans-serif;font-size:28px;font-weight:800;color:white;direction:rtl;text-align:right;text-shadow:0 2px 12px rgba(0,0,0,.5)">جودة أوروبية لعنايتك</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     07 — SESA
+════════════════════════════════ -->
+<section id="s7" data-screen-label="07 SESA">
+  <div class="topbar"></div>
+  <div style="display:flex;height:100%">
+    <!-- Left: photo -->
+    <div style="flex:.9;position:relative;overflow:hidden">
+      <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgPan 20s ease-in-out infinite alternate" src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&w=960&q=85" alt="SESA Ayurvedic">
+      <div style="position:absolute;inset:0;background:linear-gradient(to left,rgba(13,27,46,.5) 0%,rgba(13,27,46,.05) 100%)"></div>
+      <div style="position:absolute;bottom:40px;left:32px;right:32px">
+        <div style="font-family:'Cairo',sans-serif;font-size:28px;font-weight:800;color:white;text-shadow:0 2px 12px rgba(0,0,0,.5)">طبيعة الأيورفيدا لشعرك</div>
+      </div>
+    </div>
+    <!-- Right: content -->
+    <div style="flex:1.1;background:var(--navy);padding:80px 88px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div class="grid-bg"></div>
+      <div class="geo" style="width:280px;height:280px;left:-80px;top:-80px"></div>
+      <div style="position:relative;z-index:2">
+        <div class="overline a-up" style="color:rgba(255,255,255,.38)">BRAND 02 — INDIA · الهند</div>
+        <div class="divider a-line d1"></div>
+        <div style="font-size:88px;font-weight:800;letter-spacing:-.03em;line-height:.92;margin-bottom:20px" class="a-up d2">SESA</div>
+        <p style="font-size:18px;font-weight:300;font-style:italic;color:var(--blue-l);margin-bottom:32px;line-height:1.55;max-width:400px" class="a-up d3">Ayurvedic hair care solutions for anti-hair fall and nourishment</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px" class="a-up d4">
+          <span class="tag-pill">Anti Hair Fall</span>
+          <span class="tag-pill">Ayurvedic</span>
+          <span class="tag-pill">Nourishment</span>
+          <span class="tag-pill">Natural</span>
+        </div>
+        <div style="display:flex;gap:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)" class="a-up d5">
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">ORIGIN</div>
+            <div style="font-size:14px;font-weight:600">India — Ayurvedic Heritage</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">CATEGORY</div>
+            <div style="font-size:14px;font-weight:600">Hair Care · Scalp Treatment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     08 — SEA COLOR
+════════════════════════════════ -->
+<section id="s8" data-screen-label="08 Sea Color">
+  <div class="topbar"></div>
+  <div style="display:flex;height:100%">
+    <!-- Left: content -->
+    <div style="flex:1.1;background:var(--navy);padding:80px 88px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div class="grid-bg"></div>
+      <div class="geo" style="width:300px;height:300px;right:-80px;bottom:-80px"></div>
+      <div style="position:relative;z-index:2">
+        <div class="overline a-up" style="color:rgba(255,255,255,.38)">BRAND 03 — PROFESSIONAL COLOR</div>
+        <div class="divider a-line d1"></div>
+        <div style="font-size:72px;font-weight:800;letter-spacing:-.03em;line-height:.92;margin-bottom:20px" class="a-up d2">Sea Color</div>
+        <p style="font-size:18px;font-weight:300;font-style:italic;color:var(--blue-l);margin-bottom:32px;line-height:1.55;max-width:400px" class="a-up d3">Professional hair color and care at an accessible price</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px" class="a-up d4">
+          <span class="tag-pill">Hair Color</span>
+          <span class="tag-pill">Color Care</span>
+          <span class="tag-pill">Professional</span>
+          <span class="tag-pill">Accessible</span>
+        </div>
+        <div style="display:flex;gap:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)" class="a-up d5">
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">POSITIONING</div>
+            <div style="font-size:14px;font-weight:600">Professional Quality · Mass Price</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">CATEGORY</div>
+            <div style="font-size:14px;font-weight:600">Hair Color · Treatment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: photo -->
+    <div style="flex:.9;position:relative;overflow:hidden">
+      <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgPan 16s ease-in-out infinite alternate" src="https://images.unsplash.com/photo-1595476006836-52bcc8de3b3d?auto=format&w=960&q=85" alt="Sea Color hair color salon">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,27,46,.45) 0%,rgba(13,27,46,.05) 100%)"></div>
+      <div style="position:absolute;bottom:40px;left:32px;right:32px">
+        <div style="font-family:'Cairo',sans-serif;font-size:28px;font-weight:800;color:white;direction:rtl;text-align:right;text-shadow:0 2px 12px rgba(0,0,0,.5)">لون احترافي بسعر مناسب</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     09 — SITIL
+════════════════════════════════ -->
+<section id="s9" data-screen-label="09 Sitil">
+  <div class="topbar"></div>
+  <div style="display:flex;height:100%">
+    <!-- Left: photo -->
+    <div style="flex:.9;position:relative;overflow:hidden">
+      <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgPan 22s ease-in-out infinite alternate" src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&w=960&q=85" alt="Sitil daily care">
+      <div style="position:absolute;inset:0;background:linear-gradient(to left,rgba(13,27,46,.5) 0%,rgba(13,27,46,.05) 100%)"></div>
+      <div style="position:absolute;bottom:40px;left:32px;right:32px">
+        <div style="font-family:'Cairo',sans-serif;font-size:28px;font-weight:800;color:white;text-shadow:0 2px 12px rgba(0,0,0,.5)">عنايتك اليومية بأسلوب عصري</div>
+      </div>
+    </div>
+    <!-- Right: content -->
+    <div style="flex:1.1;background:var(--navy);padding:80px 88px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div class="grid-bg"></div>
+      <div class="geo" style="width:280px;height:280px;left:-80px;top:-80px"></div>
+      <div style="position:relative;z-index:2">
+        <div class="overline a-up" style="color:rgba(255,255,255,.38)">BRAND 04 — DAILY CARE</div>
+        <div class="divider a-line d1"></div>
+        <div style="font-size:88px;font-weight:800;letter-spacing:-.03em;line-height:.92;margin-bottom:20px" class="a-up d2">Sitil</div>
+        <p style="font-size:18px;font-weight:300;font-style:italic;color:var(--blue-l);margin-bottom:32px;line-height:1.55;max-width:400px" class="a-up d3">Practical and modern daily care solutions</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px" class="a-up d4">
+          <span class="tag-pill">Daily Care</span>
+          <span class="tag-pill">Personal Hygiene</span>
+          <span class="tag-pill">Modern</span>
+          <span class="tag-pill">Practical</span>
+        </div>
+        <div style="display:flex;gap:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)" class="a-up d5">
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">POSITIONING</div>
+            <div style="font-size:14px;font-weight:600">Everyday Reliability</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">CATEGORY</div>
+            <div style="font-size:14px;font-weight:600">Personal Care · Hygiene</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     10 — MAX DELUXX
+════════════════════════════════ -->
+<section id="s10" data-screen-label="10 Max Deluxx">
+  <div class="topbar"></div>
+  <div style="display:flex;height:100%">
+    <!-- Left: content -->
+    <div style="flex:1.1;background:var(--navy);padding:80px 88px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div class="grid-bg"></div>
+      <div class="geo" style="width:300px;height:300px;right:-80px;bottom:-80px"></div>
+      <div style="position:relative;z-index:2">
+        <div class="overline a-up" style="color:rgba(255,255,255,.38)">BRAND 05 — MODERN BEAUTY</div>
+        <div class="divider a-line d1"></div>
+        <div style="font-size:72px;font-weight:800;letter-spacing:-.03em;line-height:.92;margin-bottom:20px" class="a-up d2">Max Deluxx</div>
+        <p style="font-size:18px;font-weight:300;font-style:italic;color:var(--blue-l);margin-bottom:32px;line-height:1.55;max-width:400px" class="a-up d3">Modern beauty for the contemporary consumer</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px" class="a-up d4">
+          <span class="tag-pill">Cosmetics</span>
+          <span class="tag-pill">Modern Beauty</span>
+          <span class="tag-pill">Contemporary</span>
+          <span class="tag-pill">Accessible</span>
+        </div>
+        <div style="display:flex;gap:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)" class="a-up d5">
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">POSITIONING</div>
+            <div style="font-size:14px;font-weight:600">Modern · Aspirational</div>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:7px">CATEGORY</div>
+            <div style="font-size:14px;font-weight:600">Cosmetics · Beauty</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: photo -->
+    <div style="flex:.9;position:relative;overflow:hidden">
+      <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgPan 19s ease-in-out infinite alternate" src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&w=960&q=85" alt="Max Deluxx cosmetics">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,27,46,.45) 0%,rgba(13,27,46,.05) 100%)"></div>
+      <div style="position:absolute;bottom:40px;left:32px;right:32px">
+        <div style="font-family:'Cairo',sans-serif;font-size:28px;font-weight:800;color:white;direction:rtl;text-align:right;text-shadow:0 2px 12px rgba(0,0,0,.5)">جمال عصري للمرأة المعاصرة</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     11 — MARKETING & TRADE
+════════════════════════════════ -->
+<section id="s11" data-screen-label="11 Marketing">
+  <div class="topbar"></div>
+  <img class="bg-img" src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&w=1920&q=80" alt="Marketing activation">
+  <div class="overlay" style="background:linear-gradient(135deg,rgba(13,27,46,.97) 45%,rgba(28,84,153,.82) 100%)"></div>
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="slide-header">
+      <div>
+        <div class="overline a-up">MARKETING &amp; TRADE — التسويق والتنشيط</div>
+        <div class="divider a-line d1"></div>
+        <h1 style="font-size:38px;font-weight:800;line-height:1.15;margin-top:0" class="a-up d2">Activating Brands Across<br><span style="color:var(--blue-l)">Every Touchpoint</span></h1>
+      </div>
+      <div class="logo a-right"><span class="f">FOR</span><span class="w">WELL</span></div>
+    </div>
+    <div style="display:flex;gap:20px;flex:1;align-items:stretch;margin-top:28px">
+      <div class="a-up d2" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-top:3px solid var(--blue);border-radius:6px;padding:32px 28px;display:flex;flex-direction:column">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:16px">01</div>
+        <div style="width:42px;height:42px;background:rgba(47,118,194,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:10px">Digital Marketing</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;flex:1">Social media campaigns, digital ads, content creation, and brand awareness programs tailored to the Egyptian consumer.</p>
+        <div style="margin-top:18px;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-l)">Social · Ads · Content</div>
+      </div>
+      <div class="a-up d3" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-top:3px solid var(--blue);border-radius:6px;padding:32px 28px;display:flex;flex-direction:column">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:16px">02</div>
+        <div style="width:42px;height:42px;background:rgba(47,118,194,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:10px">POS Activation</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;flex:1">In-store merchandising, shelf management, branded displays, and point-of-sale materials across all retail channels.</p>
+        <div style="margin-top:18px;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-l)">Shelving · Display · POSM</div>
+      </div>
+      <div class="a-up d4" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-top:3px solid var(--blue);border-radius:6px;padding:32px 28px;display:flex;flex-direction:column">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:16px">03</div>
+        <div style="width:42px;height:42px;background:rgba(47,118,194,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:10px">Influencer Collaborations</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;flex:1">Strategic partnerships with beauty and lifestyle influencers to build authentic brand visibility and consumer trust.</p>
+        <div style="margin-top:18px;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-l)">Beauty · Lifestyle · Trust</div>
+      </div>
+      <div class="a-up d5" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-top:3px solid var(--blue);border-radius:6px;padding:32px 28px;display:flex;flex-direction:column">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:16px">04</div>
+        <div style="width:42px;height:42px;background:rgba(47,118,194,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:10px">Product Launches</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;flex:1">Full-scale launch campaigns — from trade presentations to retail rollouts and consumer-facing activations.</p>
+        <div style="margin-top:18px;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-l)">Trade · Retail · Consumer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     12 — RETAIL PRESENCE
+════════════════════════════════ -->
+<section id="s12" data-screen-label="12 Retail Presence" style="background:var(--charcoal)">
+  <div class="topbar"></div>
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="slide-header">
+      <div>
+        <div class="overline a-up">RETAIL PRESENCE — الحضور في السوق</div>
+        <div class="divider a-line d1"></div>
+        <h1 style="font-size:38px;font-weight:800;line-height:1.15;margin-top:0" class="a-up d2">Our Strategic <span style="color:var(--blue)">Partners</span></h1>
+      </div>
+      <div class="logo a-right"><span class="f">FOR</span><span class="w">WELL</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;margin-top:28px;align-content:start">
+      <div class="partner-card a-up d2"><div class="partner-name" style="color:var(--blue-l)">Carrefour</div><div class="partner-cat">Modern Trade · Hypermarket</div></div>
+      <div class="partner-card a-up d3"><div class="partner-name" style="color:var(--blue-l)">Lulu Hypermarket</div><div class="partner-cat">Modern Trade · Hypermarket</div></div>
+      <div class="partner-card a-up d4"><div class="partner-name" style="color:var(--blue-l)">Panda</div><div class="partner-cat">Modern Trade · Supermarket</div></div>
+      <div class="partner-card a-up d5"><div class="partner-name" style="color:var(--blue-l)">Seif Pharmacies</div><div class="partner-cat">Pharmacy Channel · Chain</div></div>
+      <div class="partner-card a-up d6"><div class="partner-name" style="color:var(--blue-l)">El Ezaby</div><div class="partner-cat">Pharmacy Channel · Chain</div></div>
+      <div class="partner-card a-up d7" style="background:rgba(47,118,194,.12);border-color:rgba(47,118,194,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90px">
+        <div style="font-size:32px;font-weight:800;color:var(--blue)">+</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px">Growing Network</div>
+      </div>
+    </div>
+    <div class="footnote a-up d8">Nationwide · Pharmacy · Modern Trade · Traditional Trade · E-Commerce</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     13 — PARTNERSHIP MODEL
+════════════════════════════════ -->
+<section id="s13" data-screen-label="13 Partnership Model">
+  <div class="topbar"></div>
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="slide-header">
+      <div>
+        <div class="overline a-up">PARTNERSHIP MODEL — نموذج الشراكة</div>
+        <div class="divider a-line d1"></div>
+        <h1 style="font-size:38px;font-weight:800;line-height:1.15;margin-top:0" class="a-up d2">Built on <span style="color:var(--blue)">Core Values</span></h1>
+      </div>
+      <div class="logo a-right"><span class="f">FOR</span><span class="w">WELL</span></div>
+    </div>
+    <div style="display:flex;gap:22px;flex:1;align-items:stretch;margin-top:28px">
+      <div class="val-card a-up d2">
+        <div class="icon-box" style="margin-bottom:20px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Professionalism</h3>
+        <p>Structured operations, clear SLAs, and transparent reporting — the foundation of every partnership we build with international brands.</p>
+      </div>
+      <div class="val-card a-up d3">
+        <div class="icon-box" style="margin-bottom:20px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Quality</h3>
+        <p>Rigorous standards in product handling, cold chain compliance, and retail execution — no compromises on brand integrity.</p>
+      </div>
+      <div class="val-card a-up d4">
+        <div class="icon-box" style="margin-bottom:20px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3>Long-term Growth</h3>
+        <p>We invest in building brands over time — growing market share, retail presence, and consumer loyalty year on year.</p>
+      </div>
+      <div class="val-card a-up d5">
+        <div class="icon-box" style="margin-bottom:20px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A99D8" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3>Operational Strength</h3>
+        <p>Fleet, warehouse, and field force capabilities that match Egypt's fast-moving consumer market demands at every scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     14 — CLOSING
+════════════════════════════════ -->
+<section id="s14" data-screen-label="14 Closing">
+  <div class="grid-bg"></div>
+  <div class="geo" style="width:560px;height:560px;right:-130px;top:-130px"></div>
+  <div class="geo" style="width:260px;height:260px;right:110px;top:60px"></div>
+  <div class="geo" style="width:760px;height:760px;left:-280px;bottom:-280px"></div>
+  <!-- Animated dots -->
+  <div style="position:absolute;inset:0;pointer-events:none">
+    <div style="position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);opacity:.45;top:20%;left:60%;animation:float 7s ease-in-out infinite"></div>
+    <div style="position:absolute;width:5px;height:5px;border-radius:50%;background:var(--blue-l);opacity:.35;top:70%;left:80%;animation:float 9s ease-in-out infinite 1.5s"></div>
+    <div style="position:absolute;width:10px;height:10px;border-radius:50%;background:var(--blue);opacity:.25;top:40%;left:85%;animation:pulse 5s ease-in-out infinite"></div>
+  </div>
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--blue);z-index:10"></div>
+  <div style="position:absolute;top:0;left:0;width:4px;bottom:0;background:linear-gradient(to bottom,var(--blue),transparent 60%);z-index:10"></div>
+
+  <div class="inner" style="align-items:center;justify-content:center;text-align:center">
+    <div class="a-scale" style="display:flex;flex-direction:column;align-items:center;margin-bottom:48px">
+      <div class="logo" style="justify-content:center;font-size:32px"><span class="f">FOR</span><span class="w">WELL</span></div>
+      <div class="logo-sub" style="text-align:center;margin-top:4px">Trade &amp; Distribution</div>
+    </div>
+
+    <div style="font-family:'Cairo',sans-serif;font-size:68px;font-weight:800;line-height:1.1;direction:rtl;margin-bottom:18px" class="a-up d2">نبني المستقبل معاً</div>
+    <div style="font-size:28px;font-weight:300;color:var(--blue-l);margin-bottom:52px;letter-spacing:.02em" class="a-up d3">Building the future together</div>
+
+    <div style="display:flex;align-items:center;gap:36px;margin-bottom:52px" class="a-up d4">
+      <div style="height:1px;width:80px;background:rgba(255,255,255,.18)"></div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.36)">CAIRO — EGYPT — MIDDLE EAST &amp; AFRICA</div>
+      <div style="height:1px;width:80px;background:rgba(255,255,255,.18)"></div>
+    </div>
+
+    <div style="display:flex;gap:48px;justify-content:center" class="a-up d5">
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:8px">WEB</div>
+        <div style="font-size:16px;font-weight:600">forwell.eg</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.14)"></div>
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:8px">EMAIL</div>
+        <div style="font-size:16px;font-weight:600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f29b9c949db2949d8085979e9edc9795">[email&#160;protected]</a></div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.14)"></div>
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-l);margin-bottom:8px">PHONE</div>
+        <div style="font-size:16px;font-weight:600">+20 — [Contact]</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;bottom:36px;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.18)">© 2024 FORWELL TRADE &amp; DISTRIBUTION — ALL RIGHTS RESERVED</div>
+  </div>
+</section>
+
+</deck-stage>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Replay slide entry animations on each slide visit
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in-view');
+    } else {
+      entry.target.classList.remove('in-view');
+    }
+  });
+}, { threshold: 0.45 });
+
+document.querySelectorAll('deck-stage > section').forEach(s => observer.observe(s));
+</script>
+
+<script>
+(function() {
+  function tryPrint() {
+    // Make sure all animated elements are visible before printing
+    document.querySelectorAll('.a-up,.a-left,.a-right,.a-scale').forEach(function(el) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.animation = 'none';
+    });
+    document.querySelectorAll('.a-line').forEach(function(el) {
+      el.style.transform = 'scaleX(1)';
+      el.style.animation = 'none';
+    });
+    // Also add in-view to all sections so CSS animations resolve
+    document.querySelectorAll('deck-stage > section').forEach(function(s) {
+      s.classList.add('in-view');
+    });
+    setTimeout(function() { window.print(); }, 500);
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function() {
+      setTimeout(tryPrint, 400);
+    });
+  } else {
+    window.addEventListener('load', function() {
+      setTimeout(tryPrint, 800);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
